@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:angular_utility/src/grind.dart';
+import 'package:angular_utility/angular_utility.dart';
 
 Future<Null> main(List<String> args) async {
-  grindAll(new List.from(args)..add('glob'));
+  config.importOptimize.packagesToCheck.addAll(['glob', 'source_span', 'grinder']);
+  angular_utility();
 }
-
