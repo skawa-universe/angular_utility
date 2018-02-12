@@ -6,6 +6,7 @@ dist: trusty
 dart:
  - stable
 
+before_install:
   - chmod ugo+x tool/travis.sh
 
 script: ./tool/travis.sh
