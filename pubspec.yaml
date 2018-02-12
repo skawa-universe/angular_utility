@@ -1,4 +1,6 @@
 name: angular_utility
+version: 0.0.2
+
 environment:
   sdk: '>=1.19.0 <2.0.0'
 dependencies:
@@ -6,3 +8,5 @@ dependencies:
   source_span:
   grinder:
   package_resolver:
+  sass_builder: 0.1.1
+  build_runner: 0.3.4

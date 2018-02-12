@@ -6,14 +6,20 @@ import 'package:source_span/source_span.dart' as span;
 import 'package:source_span/src/colors.dart' as span_color;
 import 'package:package_resolver/package_resolver.dart';
 
-Future grindAll(List<String> package, {List<ErrorPattern> errorPatternList: const[]}) async {
+@Task('Compile all SCSS files to CSS')
+Future<Null> sass() async {
+  Dart.run(r'tool/sass_build.dart');
+}
+
+@Task('Check angular imports to reduce the complied code size')
+Future checkImports(List<String> package, {List<ErrorPattern> errorPatternList: const []}) async {
   List packageList = [await libDir.path];
   await Future.forEach(package, (String package) async {
     packageList.add(await PackageResolver.current.packagePath(package));
   });
   List<ErrorResult> errorCases = [];
   packageList.forEach((String package) {
-    errorCases.addAll(_grind(package, errorPatternList: errorPatternList));
+    errorCases.addAll(_check(package, errorPatternList: errorPatternList));
   });
   if (errorCases.isNotEmpty) {
     print(_buildError(errorCases));
@@ -21,7 +27,7 @@ Future grindAll(List<String> package, {List<ErrorPattern> errorPatternList: cons
   }
 }
 
-List<ErrorResult> _grind(String package, {List<ErrorPattern> errorPatternList}) {
+List<ErrorResult> _check(String package, {List<ErrorPattern> errorPatternList}) {
   final dartFiles = new Glob("${package}/**.dart");
   final errorCases = <ErrorResult>[];
   for (var entity in dartFiles.listSync(root: '.', followLinks: false)) {
@@ -34,8 +40,7 @@ List<ErrorResult> _grind(String package, {List<ErrorPattern> errorPatternList}) 
       fullSkawaComponentsImport,
       fullMaterialDirective,
       fullMaterialProviders
-    ]
-      ..addAll(errorPatternList);
+    ]..addAll(errorPatternList);
     final fileContents = dartFile.readAsStringSync();
     for (var pattern in errorPatterns) {
       var match = pattern.pattern.firstMatch(fileContents);
