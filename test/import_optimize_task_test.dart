@@ -4,10 +4,10 @@ import 'package:angular_utility/angular_utility.dart';
 
 main() {
   test('ImportOptimizeTask should throw', () async {
-    expect(() async =>
-    await new ImportOptimizeTask().runTask(
-        new ImportOptimizeConfig()
+    expect(
+        () async => await new ImportOptimizeTask().task(new ImportOptimizeConfig()
           ..pathToCheck.add('test')
-          ..verbose = false), throwsStateError);
+          ..verbose = false),
+        throwsStateError);
   });
 }

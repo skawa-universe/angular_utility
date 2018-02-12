@@ -23,15 +23,17 @@ class ImportOptimizeConfig implements TaskConfig {
 
   @override
   bool verbose = true;
+
+  @override
+  bool shouldRun = true;
 }
 
-class ImportOptimizeTask implements GrindTask {
-
+class ImportOptimizeTask extends GrindTask {
   /// This task should check that, the given packages has imported files/directives/providers
   /// which will inflates file size. This method helps locating these imports.
   ///
   @override
-  Future runTask(ImportOptimizeConfig taskConfig) async {
+  Future task(ImportOptimizeConfig taskConfig) async {
     List<ErrorResult> errorCases = [];
     await Future.forEach(taskConfig.packagesToCheck, (String package) async {
       print('Packages to check: ${package}');
@@ -61,8 +63,7 @@ class ImportOptimizeTask implements GrindTask {
       for (var pattern in errorPatternList) {
         var match = pattern.pattern.firstMatch(fileContents);
         if (match == null) continue;
-        var sf = new span.SourceFile.fromString(fileContents,
-            url: dartFile.uri.toFilePath());
+        var sf = new span.SourceFile.fromString(fileContents, url: dartFile.uri.toFilePath());
         span.SourceSpan errorSpan;
         if (match.groupCount > 0) {
           var g = match.group(1);
@@ -80,9 +81,7 @@ class ImportOptimizeTask implements GrindTask {
   String _buildError(List<ErrorResult> errorCases) {
     StringBuffer error = new StringBuffer('Problems in files:\n');
     for (var err in errorCases) {
-      error
-        ..writeln(err.errorSpan
-            .message(err.pattern.description, color: span_color.RED));
+      error..writeln(err.errorSpan.message(err.pattern.description, color: span_color.RED));
     }
     return error.toString();
   }
@@ -103,14 +102,10 @@ class ErrorResult {
 }
 
 final ErrorPattern fullAngularComponentsImport = new ErrorPattern(
-    new RegExp(
-        r'''import\s+['"]{1}package:angular_components/angular_components\.dart['"]{1}''',
-        caseSensitive: false),
+    new RegExp(r'''import\s+['"]{1}package:angular_components/angular_components\.dart['"]{1}''', caseSensitive: false),
     'Imports angular_components/angular_components.dart that inflates compiled file size.');
 final ErrorPattern fullSkawaComponentsImport = new ErrorPattern(
-    new RegExp(
-        r'''import\s+['"]{1}package:skawa_components/skawa_components\.dart['"]{1}''',
-        caseSensitive: false),
+    new RegExp(r'''import\s+['"]{1}package:skawa_components/skawa_components\.dart['"]{1}''', caseSensitive: false),
     'Imports skawa_components/skawa_components.dart that inflates compiled file size.');
 final ErrorPattern fullMaterialDirective = new ErrorPattern(
     new RegExp(r'''directives:\s*const\s+\[.*(materialDirectives).*\]'''),
