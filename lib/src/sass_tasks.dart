@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:angular_utility/src/grind_task.dart';
-import 'package:grinder/grinder_sdk.dart';
+import 'package:logging/logging.dart';
+import 'package:build_runner/build_runner.dart';
+import 'package:sass_builder/phase.dart';
 
 class SassBuildConfig implements TaskConfig {
   @override
@@ -16,7 +18,7 @@ class SassBuildTask extends GrindTask {
   ///
   @override
   Future task(SassBuildConfig taskConfig) async {
-    return Dart.run(r'tool/sass_build.dart', quiet: !taskConfig.verbose);
+    return build(new PhaseGroup()..addPhase(sassPhase), logLevel: taskConfig.verbose ? Level.ALL : Level.OFF);
   }
 }
 
@@ -34,6 +36,8 @@ class SassWatchTask extends GrindTask {
   ///
   @override
   Future task(SassWatchConfig taskConfig) async {
-    return Dart.runAsync(r'tool/sass_watch.dart', quiet: !taskConfig.verbose);
+    return watch(new PhaseGroup()..addPhase(sassPhase),
+            deleteFilesByDefault: true, logLevel: taskConfig.verbose ? Level.ALL : Level.OFF)
+        .drain();
   }
 }
