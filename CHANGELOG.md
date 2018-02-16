@@ -1,3 +1,7 @@
+## 0.0.4
+
+- Removed angular_components dependency
+
 ## 0.0.3
 
 - Added tests with travis integration
