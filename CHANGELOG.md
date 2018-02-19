@@ -1,3 +1,7 @@
+## 0.1.0-alpha
+
+- Prepare the package to be usable with Angular4
+
 ## 0.0.4
 
 - Removed angular_components dependency

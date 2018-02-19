@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'package:angular_utility/src/grind_task.dart';
-import 'package:logging/logging.dart';
 import 'package:build_runner/build_runner.dart';
-import 'package:sass_builder/phase.dart';
+import 'package:sass_builder/sass_builder.dart';
 
 class SassBuildConfig implements TaskConfig {
   @override
@@ -18,7 +17,8 @@ class SassBuildTask extends GrindTask {
   ///
   @override
   Future task(SassBuildConfig taskConfig) async {
-    return build(new PhaseGroup()..addPhase(sassPhase), logLevel: taskConfig.verbose ? Level.ALL : Level.OFF);
+    return build([new BuildAction(new SassBuilder(), 'skawa_components')],
+        deleteFilesByDefault: true, writeToCache: true);
   }
 }
 
@@ -36,8 +36,7 @@ class SassWatchTask extends GrindTask {
   ///
   @override
   Future task(SassWatchConfig taskConfig) async {
-    return watch(new PhaseGroup()..addPhase(sassPhase),
-            deleteFilesByDefault: true, logLevel: taskConfig.verbose ? Level.ALL : Level.OFF)
-        .drain();
+    return watch([new BuildAction(new SassBuilder(), 'skawa_components')],
+        deleteFilesByDefault: true, writeToCache: true);
   }
 }
