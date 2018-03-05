@@ -1,3 +1,7 @@
+## 0.1.0-alpha+1
+
+- Sass tasks now writing to the cache
+
 ## 0.1.0-alpha
 
 - Prepare the package to be usable with Angular4
