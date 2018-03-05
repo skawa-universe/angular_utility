@@ -9,6 +9,8 @@ class SassBuildConfig implements TaskConfig {
 
   @override
   bool shouldRun = true;
+
+  String package;
 }
 
 class SassBuildTask extends GrindTask {
@@ -17,8 +19,8 @@ class SassBuildTask extends GrindTask {
   ///
   @override
   Future task(SassBuildConfig taskConfig) async {
-    return build([new BuildAction(new SassBuilder(), 'skawa_components')],
-        deleteFilesByDefault: true, writeToCache: true);
+    if (taskConfig.package.isEmpty) throw new ArgumentError('package have to configured!');
+    return build([new BuildAction(new SassBuilder(), taskConfig.package)], deleteFilesByDefault: true);
   }
 }
 
@@ -28,6 +30,8 @@ class SassWatchConfig implements TaskConfig {
 
   @override
   bool shouldRun = true;
+
+  String package;
 }
 
 class SassWatchTask extends GrindTask {
@@ -36,7 +40,7 @@ class SassWatchTask extends GrindTask {
   ///
   @override
   Future task(SassWatchConfig taskConfig) async {
-    return watch([new BuildAction(new SassBuilder(), 'skawa_components')],
-        deleteFilesByDefault: true, writeToCache: true);
+    if (taskConfig.package.isEmpty) throw new ArgumentError('package have to configured!');
+    return watch([new BuildAction(new SassBuilder(), taskConfig.package)], deleteFilesByDefault: true);
   }
 }
