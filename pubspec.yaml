@@ -1,5 +1,5 @@
 name: angular_utility
-version: 0.1.0-alpha+1
+version: 0.1.0-alpha+2
 
 environment:
   sdk: 1.24.3
@@ -9,5 +9,6 @@ dependencies:
   source_span: ^1.4.0
   sass_builder: 1.1.1
   build_runner: 0.6.0
+  sass: 1.0.0-beta.5.2
 dev_dependencies:
   test: ^0.12.24

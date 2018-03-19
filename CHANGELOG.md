@@ -1,3 +1,7 @@
+## 0.1.0-alpha+2
+
+- Sass package version hard coded due breaking changes
+
 ## 0.1.0-alpha+1
 
 - Sass tasks now writing to the cache
