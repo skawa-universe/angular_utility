@@ -1,3 +1,7 @@
+## 0.1.0-alpha+3
+
+- sass_builder package version updated
+
 ## 0.1.0-alpha+2
 
 - Sass package version hard coded due breaking changes
