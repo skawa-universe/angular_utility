@@ -14,9 +14,6 @@ class SassBuildConfig implements TaskConfig {
 }
 
 class SassBuildTask extends GrindTask {
-  /// This task should check that, the given packages has imported files/directives/providers
-  /// which will inflates file size. This method helps locating these imports.
-  ///
   @override
   Future task(SassBuildConfig taskConfig) async {
     if (taskConfig.package.isEmpty) throw new ArgumentError('package have to configured!');
@@ -35,9 +32,6 @@ class SassWatchConfig implements TaskConfig {
 }
 
 class SassWatchTask extends GrindTask {
-  /// This task should check that, the given packages has imported files/directives/providers
-  /// which will inflates file size. This method helps locating these imports.
-  ///
   @override
   Future task(SassWatchConfig taskConfig) async {
     if (taskConfig.package.isEmpty) throw new ArgumentError('package have to configured!');
