@@ -35,7 +35,7 @@ class ServeProcess {
       log.fine('${processInformation.processName} started.');
       var stdoutBroadcast = _serveProcess.stdout.asBroadcastStream();
       stdoutBroadcast.transform(UTF8.decoder).transform(new LineSplitter()).listen((String line) {
-        if (line.contains('Build completed successfully')) {
+        if (line.contains('Build completed successfully') && !resultCompleter.isCompleted) {
           resultCompleter.complete(true);
         }
       }, onDone: () {
